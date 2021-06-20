@@ -3,8 +3,7 @@ import path from 'path';
 import Link from 'next/link';
 import marked from 'marked';
 import matter from 'gray-matter';
-import Layout from '../../components/Layout';
-import CategoryLabel from '../../components/CategoryLabel';
+import { CategoryLabel, Layout } from '@/components/index';
 
 export default function PostPage({
   frontmatter: { title, category, date, cover_image, author, author_image },
