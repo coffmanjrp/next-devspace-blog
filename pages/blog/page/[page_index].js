@@ -4,6 +4,7 @@ import Link from 'next/link';
 import matter from 'gray-matter';
 import Layout from '../../../components/Layout';
 import Post from '../../../components/Post';
+import Pagination from '../../../components/Pagination';
 import { sortByDate } from '../../../utils';
 import { POST_PER_PAGE } from '../../../config';
 
@@ -16,6 +17,7 @@ export default function BlogPage({ posts, numPages, currentPage }) {
           <Post key={index} post={post} />
         ))}
       </div>
+      <Pagination currentPage={currentPage} numPages={numPages} />
     </Layout>
   );
 }
@@ -63,7 +65,7 @@ export async function getStaticProps({ params }) {
   const pageIndex = page - 1;
   const orderedPost = posts
     .sort(sortByDate)
-    .slice(-pageIndex * POST_PER_PAGE, (pageIndex + 1) * POST_PER_PAGE);
+    .slice(pageIndex * POST_PER_PAGE, (pageIndex + 1) * POST_PER_PAGE);
 
   return {
     props: {
