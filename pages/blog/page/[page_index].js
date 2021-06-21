@@ -1,19 +1,26 @@
 import fs from 'fs';
 import path from 'path';
-import { Layout, Pagination, Post } from '@/components/index';
+import { CategoryList, Layout, Pagination, Post } from '@/components/index';
 import { getPosts } from '@/lib/posts';
 import { POST_PER_PAGE } from '@/config/index';
 
-export default function BlogPage({ posts, numPages, currentPage }) {
+export default function BlogPage({ posts, numPages, currentPage, categories }) {
   return (
     <Layout>
-      <h1 className="text-5xl border-b-4 p-5 font-bold">Blog</h1>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {posts.map((post, index) => (
-          <Post key={index} post={post} />
-        ))}
+      <div className="flex justify-between">
+        <div className="lg:w-3/4 lg:mr-10">
+          <h1 className="text-5xl border-b-4 p-5 font-bold">Blog</h1>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {posts.map((post, index) => (
+              <Post key={index} post={post} />
+            ))}
+          </div>
+          <Pagination currentPage={currentPage} numPages={numPages} />
+        </div>
+        <div className="hidden lg:block w-1/4">
+          <CategoryList categories={categories} />
+        </div>
       </div>
-      <Pagination currentPage={currentPage} numPages={numPages} />
     </Layout>
   );
 }
@@ -43,6 +50,11 @@ export async function getStaticProps({ params }) {
   const page = parseInt((params && params.page_index) || 1);
   const files = fs.readdirSync(path.join('posts'));
   const posts = getPosts();
+
+  // Get categories for sidebar
+  const categories = posts.map((post) => post.frontmatter.category);
+  const uniqueCategories = [...new Set(categories)];
+
   const numPages = Math.ceil(files.length / POST_PER_PAGE);
   const pageIndex = page - 1;
   const orderedPost = posts.slice(
@@ -55,6 +67,7 @@ export async function getStaticProps({ params }) {
       posts: orderedPost,
       numPages,
       currentPage: page,
+      categories: uniqueCategories,
     },
   };
 }
