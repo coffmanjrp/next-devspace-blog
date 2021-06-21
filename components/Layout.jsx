@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import { Header, Search } from '.';
+import { Header, Search } from './';
 
 export default function Layout({ title, keywords, description, children }) {
   return (

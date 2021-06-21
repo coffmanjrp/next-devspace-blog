@@ -5,3 +5,4 @@ export { default as Layout } from './Layout';
 export { default as Pagination } from './Pagination';
 export { default as Post } from './Post';
 export { default as Search } from './Search';
+export { default as SearchResults } from './SearchResults';
